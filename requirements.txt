@@ -4,3 +4,4 @@ django-heroku
 djangorestframework
 django-allauth
 django-rest-auth
+django_filter
