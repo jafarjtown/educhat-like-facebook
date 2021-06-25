@@ -2,5 +2,5 @@ django
 gunicorn
 django-heroku
 djangorestframework
-allauth
-rest_auth
+django-allauth
+django-rest-auth
