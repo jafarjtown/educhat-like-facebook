@@ -1,6 +1,0 @@
-django
-gunicorn
-django-heroku
-djangorestframeworks
-allauth
-rest_auth
