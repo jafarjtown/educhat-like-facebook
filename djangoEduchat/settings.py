@@ -91,23 +91,23 @@ WSGI_APPLICATION = 'djangoEduchat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': BASE_DIR / 'db.sqlite3',
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'educhat',
+        'USER':'postgres',
+        'PASSWORD': '1234',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
     }
 }
-
-#DATABASES = {
-#   'default': {
-#       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#       'NAME': 'educhat',
-#       'USER':'postgres',
-#       'PASSWORD': '1234',
-#       'HOST': '127.0.0.1',
-#       'PORT': '5432'
-#   }
-#}
 
 
 # Password validation
@@ -171,7 +171,7 @@ REST_FRAMEWORK = {
     ],
 }
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+ACCOUNT_ADAPTER = 'user_profile.adapters.UserAdapter'
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'user_profile.serializers.CustomRegisterSerializer',
 }

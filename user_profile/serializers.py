@@ -14,10 +14,19 @@ class CustomRegisterSerializer(RegisterSerializer):
 			required = True,
 			max_length = 15
 		)
+	avatar = serializers.ImageField(
+			required = 'false'
+		)
+	cover = serializers.ImageField(
+			required = 'false'
+		)
+
 
 	def get_cleaned_data(self):
 		data_dict = super().get_cleaned_data()
 		data_dict['first_name'] = self.validated_data.get('first_name','')
 		data_dict['last_name'] = self.validated_data.get('last_name','')
+		data_dict['avatar'] = self.validated_data.get('avatar','')
+		data_dict['cover'] = self.validated_data.get('cover','')
 		return data_dict
 
