@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'chat',
     'post',
     'api',
+    'Image',
+    'Activity',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
