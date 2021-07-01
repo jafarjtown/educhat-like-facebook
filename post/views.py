@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from api.views import PostSerializer
+from Image.models import File
 # Create your views here.
 @api_view(['GET'])
 def GetUserFeedPost(request, pk):
@@ -26,12 +27,16 @@ def GetUserFeedPost(request, pk):
 
 def AddNewPost(request):
     print(request.body)
-    json_data = json.loads(request.body)
-    print(json_data)
-    user = User.objects.get(id=json_data['id'])
-    text = json_data['text']
-    files = json_data['files'] 
-    print(json_data)
-    p = Post.objects.create(user=user,text=text, files=files)
-    p.save()
+    # json_data = json.loads(request.body['files'])
+    print(request.body['files'])
+    # user = User.objects.get(id=json_data['id'])
+    # text = json_data['text']
+    # files = json_data['files'] 
+    # print(files)
+    # p = Post.objects.create(user=user,text=text)
+    # for img in files:
+    #     print(img)
+    #     file = File.objects.create(file=img, owner=user)
+    #     p.files.add(file)
+    # p.save()
     return HttpResponse('post save')
