@@ -8,15 +8,18 @@ import django_filters.rest_framework
 from user_profile.models import User
 from chat.models import Chat
 from post.models import Post, Comment
+from Image.models import File
 from rest_framework.parsers import MultiPartParser, FormParser
+from Activity.Notifications import Post_Notification
 """
 User serializer
 """
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        exclude = ['password']
-        depth = 2
+        # exclude = ['password']
+        fields = ['username','first_name','last_name','posts','pictures','profile_pics','cover_pics','followers','following','id']
+        depth = 1
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -27,43 +30,6 @@ class UserViewSet(viewsets.ModelViewSet):
 """
 Audio serialzer
 """
-
-# class AudioSerializer(ModelSerializer):
-#     class Meta:
-#         model = Audio
-#         fields = '__all__'
-
-# class AudioViewSet(viewsets.ModelViewSet):
-#     queryset = Audio.objects.all()
-#     serializer_class = AudioSerializer
-#     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-#     filterset_fields = ['title']
-#     search_fields = ['@title']
-
-# """
-# book serializer
-# """
-# # books
-# class BookSerializer(ModelSerializer):
-#     class Meta:
-#         model = Book
-#         fields = '__all__'
-
-# class BookViewSet(viewsets.ModelViewSet):
-#     queryset = Book.objects.all()
-#     serializer_class = BookSerializer
-
-    
-#     def get_context_data(self, **kwargs):
-#         context = super(BookViewSet, self).get_context_data(**kwargs)
-#         return context
-        
-#     def get_queryset(self):
-#         queryset = super(BookViewSet, self).get_queryset()
-#         queryset = queryset # TODO
-#         return queryset
-
-
 
 
 """
@@ -99,7 +65,7 @@ class CommentSerializer(ModelSerializer):
         model = Comment
         exclude = ['post']
         # fields = '__all__'
-        depth = 2
+        depth = 1
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -127,13 +93,15 @@ class PostSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = ['id','user','text','timestamp','files','comment_set']
+
         depth = 2
-    def create(self, validated_data):
-        return Post.objects.create(**validated_data)
+    # def create(self, validated_data):
+    #     print('here')
+    #     return Post.objects.create(**validated_data)
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.order_by('-timestamp')
     serializer_class = PostSerializer
-    parser_classes = (MultiPartParser,FormParser)
+    parser_classes = (MultiPartParser,FormParser,)
     # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     # filterset_fields = ['user__id']
     # search_fields = ['@user__id']
@@ -147,13 +115,19 @@ class PostViewSet(viewsets.ModelViewSet):
         queryset = super(PostViewSet, self).get_queryset()
         queryset = queryset # TODO
         return queryset
-
+    
     def create(self, validated_data):
         user_id = validated_data.data.get('id')
         text = validated_data.data.get('text')
-        files = validated_data.data.get('files')
+        files = dict((validated_data.data).lists())['files']
         user = User.objects.get(id=user_id)
-        p = Post.objects.create(user=user,text=text,files=files)
+        p = Post.objects.create(user=user, text=text)
+        if files:
+            for img in files:
+                file = File.objects.create(owner=user, file=img)
+                file.save()
+                p.files.add(file)
+        Post_Notification(user=user,post=p).CreateNotification()
         p.save()
-        return HttpResponse(p)
+        return HttpResponse('nice')
 
