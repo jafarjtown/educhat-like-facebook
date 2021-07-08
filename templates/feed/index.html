@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<!-- styles -->
+
+<style>
+    .feed{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .feed-header{
+        position: sticky;
+        top: 0;
+        width: 100%;
+        padding: 5px;
+        border-bottom: .5px solid;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        background-color: white;
+    }
+    .feed-header > button{
+        font-size: medium;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        padding: 3px;
+    }
+</style>
+
+<!-- end styles -->
+<div class="feed">
+ <div class="feed-header">
+     <button>New Post</button>
+ </div>
+
+ {% for post in posts %}
+     {% include 'components/post/post.html' with post=post %} 
+       
+ {% endfor %}
+     
+       
+</div>
+{% endblock main %}

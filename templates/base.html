@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+				box-sizing: border-box;
+			}
+            body{
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+
+            main{
+                width: 100%;
+                flex: 10;
+                height: 90%;
+            }
+		</style>
+		<title>my site</title>
+	</head>
+	<body>
+		<main>{% block main %} {% endblock main %}</main>
+
+		<footer>{% include 'components/nav/nav.html' %}</footer>
+	</body>
+</html>

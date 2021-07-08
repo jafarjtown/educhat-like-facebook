@@ -1,0 +1,23 @@
+
+
+<!-- 
+<img src={{file.url}} class="post-body-image" />
+ -->
+<di id="{{id}}"></di>
+
+<script>
+
+    if(('{{file}}').endsWith('mp4')){
+        let vid = document.createElement('video')
+        vid.src='{{file.url}}'
+        vid.controls = true
+        vid.className = 'post-body-image'
+        document.getElementById('{{id}}').append(vid)
+    }
+    else if(('{{file}}').endsWith('png')){
+        let img = document.createElement('img')
+        img.src = '{{file.url}}'
+        img.className = 'post-body-image'
+        document.getElementById('{{id}}').append(img)
+    }
+</script>
