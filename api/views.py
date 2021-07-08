@@ -18,7 +18,7 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         # exclude = ['password']
-        fields = ['username','first_name','last_name','posts','pictures','profile_pics','cover_pics','followers','following','id']
+        fields = ['fullName','username','first_name','last_name','posts','pictures','profile_pics','cover_pics','followers','following','id']
         depth = 1
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -92,7 +92,7 @@ class PostSerializer(ModelSerializer):
     # comment_set = CommentSerializer()
     class Meta:
         model = Post
-        fields = ['id','user','text','timestamp','files','comment_set']
+        fields = ['id','user','text','timestamp','files','comment_set','likes']
 
         depth = 2
     # def create(self, validated_data):
@@ -119,10 +119,11 @@ class PostViewSet(viewsets.ModelViewSet):
     def create(self, validated_data):
         user_id = validated_data.data.get('id')
         text = validated_data.data.get('text')
-        files = dict((validated_data.data).lists())['files']
+        files_raw = validated_data.data.get('files')
         user = User.objects.get(id=user_id)
         p = Post.objects.create(user=user, text=text)
-        if files:
+        if files_raw:
+            files = dict((validated_data.data).lists())['files']
             for img in files:
                 file = File.objects.create(owner=user, file=img)
                 file.save()

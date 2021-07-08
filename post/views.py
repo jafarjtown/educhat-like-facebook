@@ -25,18 +25,19 @@ def GetUserFeedPost(request, pk):
     serializer = PostSerializer(userPost, many=True)
     return Response(serializer.data)
 
-def AddNewPost(request):
+def LikeComment(request):
     print(request.body)
-    # json_data = json.loads(request.body['files'])
-    print(request.body['files'])
-    # user = User.objects.get(id=json_data['id'])
-    # text = json_data['text']
-    # files = json_data['files'] 
-    # print(files)
-    # p = Post.objects.create(user=user,text=text)
-    # for img in files:
-    #     print(img)
-    #     file = File.objects.create(file=img, owner=user)
-    #     p.files.add(file)
-    # p.save()
-    return HttpResponse('post save')
+    json_load = json.loads(request.body)
+    post_id = json_load['post_id']
+    user_id = json_load['user_id']
+    user = User.objects.get(id=user_id)
+    post = Post.objects.get(id=post_id)
+
+    if user in post.likes.all():
+        post.likes.remove(user)
+        return HttpResponse(f'post dislike')
+    else:
+        post.likes.add(user)
+        return HttpResponse(f'post like')
+    print(f'{post_id} {user_id}')
+    return HttpResponse(request.body)

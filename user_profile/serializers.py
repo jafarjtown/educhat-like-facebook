@@ -15,10 +15,10 @@ class CustomRegisterSerializer(RegisterSerializer):
 			max_length = 15
 		)
 	avatar = serializers.ImageField(
-			required = 'false'
+			required = False
 		)
 	cover = serializers.ImageField(
-			required = 'false'
+			required = False
 		)
 
 
