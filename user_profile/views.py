@@ -18,3 +18,6 @@ def FollowUnFollow(request):
 		user_1.following.add(user_2)
 		user_2.followers.add(user_1)
 	return HttpResponse(f'{sender_id}-{receiver_id}')
+
+def HomeView(request):
+	return render(request, 'profile/profile.html')
