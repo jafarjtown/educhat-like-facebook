@@ -1,15 +1,17 @@
-from rest_framework import routers
+
+from django.contrib import admin
 from django.urls import path, include
-from .views import UserViewSet,ChatViewSet,PostViewSet,CommentViewSet
-
-router = routers.DefaultRouter()
-
-# router.register('__books__', BookViewSet)
-# router.register('__audio__', AudioViewSet)
-router.register('user', UserViewSet)
-router.register('chatbox',ChatViewSet)
-router.register('post',PostViewSet)
-router.register('comment',CommentViewSet)
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
-    path('', include(router.urls)),
+    path('admin/', admin.site.urls),
+    path('', include('feed.urls')),
+    path('user/', include('user_profile.urls')),
+    path('chat/', include('chat.urls')),
+    path('post/', include('post.urls')),
+    path('api/', include('api.urls')),
+    path('auth-api/', include('rest_auth.urls')),
+    path('auth-api/registration', include('rest_auth.registration.urls'))
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
