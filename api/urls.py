@@ -6,11 +6,10 @@ router = routers.DefaultRouter()
 
 # router.register('__books__', BookViewSet)
 # router.register('__audio__', AudioViewSet)
-router.register('__user__', UserViewSet)
-router.register('__user_chat__',ChatViewSet)
-router.register('__user_post__',PostViewSet)
-router.register('__user_post_comment__',CommentViewSet)
+router.register('user', UserViewSet)
+router.register('chatbox',ChatViewSet)
+router.register('post',PostViewSet)
+router.register('comment',CommentViewSet)
 urlpatterns = [
     path('', include(router.urls)),
-    
 ]

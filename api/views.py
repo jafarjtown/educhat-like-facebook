@@ -18,7 +18,7 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         # exclude = ['password']
-        fields = ['fullName','username','first_name','last_name','posts','pictures','profile_pics','cover_pics','followers','following','id']
+        fields = ['fullName','username','first_name','last_name','profile_pics','cover_pics','followers','following','id']
         depth = 1
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -88,18 +88,18 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class PostSerializer(ModelSerializer):
-    user = UserSerializer()
+    # user = UserSerializer()
     # comment_set = CommentSerializer()
     class Meta:
         model = Post
-        fields = ['id','user','text','timestamp','files','comment_set','likes']
+        fields = '__all__'
 
         depth = 2
     # def create(self, validated_data):
     #     print('here')
     #     return Post.objects.create(**validated_data)
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.order_by('-timestamp')
+    queryset = Post.objects.order_by('-timestamp').select_related('user').prefetch_related('files')
     serializer_class = PostSerializer
     parser_classes = (MultiPartParser,FormParser,)
     # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
